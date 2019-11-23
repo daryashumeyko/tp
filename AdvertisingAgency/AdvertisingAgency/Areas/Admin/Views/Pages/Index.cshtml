@@ -1,0 +1,45 @@
+﻿@model IEnumerable<AdvertisingAgency.Models.ViewModels.Pages.PageVM>
+
+@{
+    ViewBag.Title = "Pages";
+}
+
+<h2>Страницы</h2>
+
+<p>
+    @Html.ActionLink("Create New Page", "Add Page", "", new { @class = "btn btn-success"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Slug
+        </th>
+        <th>
+            Sidebar
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Slug)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HasSidebar)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Редактировать страницу", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Просмотреть страницу", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Удалить страницу", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

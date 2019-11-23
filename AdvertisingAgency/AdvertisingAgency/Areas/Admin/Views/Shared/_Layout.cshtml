@@ -10,7 +10,8 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        @Html.ActionLink("DashBoard", "Index", "Dashboard", new {@class = "navbar-brand"})
+        <!--Ссылка на главную страницу-->
+        @Html.ActionLink("Панель управления", "Index", "Dashboard", new {@class = "navbar-brand"})
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -27,7 +28,7 @@
                 </li>
             </ul>
 
-            <!--New right menu-->
+            <!--Новое меню справа-->
             <ul class="navbar-nav ml-auto">
                 <li>
                     <a href="/" class="navbar-brand" target="_blank"> Корзина </a>
