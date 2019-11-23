@@ -6,8 +6,15 @@
 
 <h2>Страницы</h2>
 
+@if (TempData["M"] != null) 
+{
+    <div class="alert alert-success">
+        @TempData["M"]
+    </div>
+}
+
 <p>
-    @Html.ActionLink("Create New Page", "Add Page", "", new { @class = "btn btn-success"})
+    @Html.ActionLink("Создать новую страницу", "Add Page", "", new { @class = "btn btn-success"})
 </p>
 <table class="table">
     <tr>
@@ -35,9 +42,9 @@
             @Html.DisplayFor(modelItem => item.HasSidebar)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Редактировать страницу", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Просмотреть страницу", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Удалить страницу", new { id=item.Id })
+            @Html.ActionLink("Редактировать страницу", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Просмотреть страницу", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Удалить страницу", "Delete", new { id=item.Id })
         </td>
     </tr>
 }
