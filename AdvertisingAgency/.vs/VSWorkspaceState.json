@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\AdvertisingAgency",
+    "\\AdvertisingAgency\\App_Data",
+    "\\AdvertisingAgency\\Areas",
+    "\\AdvertisingAgency\\Areas\\Admin",
+    "\\AdvertisingAgency\\Areas\\Admin\\Controllers",
+    "\\AdvertisingAgency\\Areas\\Admin\\Models",
+    "\\AdvertisingAgency\\Areas\\Admin\\Views",
+    "\\AdvertisingAgency\\Areas\\Admin\\Views\\Shared",
+    "\\AdvertisingAgency\\Controllers"
+  ],
+  "SelectedNode": "\\AdvertisingAgency\\Areas\\Admin\\Views\\Shared\\_Layout.cshtml",
+  "PreviewInSolutionExplorer": false
+}
