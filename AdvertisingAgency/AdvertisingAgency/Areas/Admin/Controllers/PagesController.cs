@@ -28,7 +28,7 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
         }
 
         // GET: Admin/Pages/AddPage
-        [HttpPost]
+        [HttpGet]
         public ActionResult AddPage()
         {
             return View();
@@ -87,12 +87,127 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
                 db.Pages.Add(dto);
                 db.SaveChanges();
             }
-
             //Передам сообщение через TenyData (Временные данные)
             TempData["M"] = "Вы добавили новую страницу:";
 
             //Переадресовываем пользователя на страницу Index
             return RedirectToAction("Index");
+        }
+
+        // GET: Admin/Pages/EditPage
+        [HttpGet]
+        public ActionResult EditPage(int id)
+        {
+            //Объявляем модель PageVM (Page View Model)
+            PageVM model;
+
+            using (Db db = new Db())
+            {
+                //Получаем страницу
+                PagesDTO dto = db.Pages.Find(id);
+
+                //Проверяем доступность страницы
+                if (dto == null)
+                {
+                    return Content("Данная страница недоступна.");
+                }
+                //Присваиваем в модель данные, которые получили
+                model = new PageVM(dto);
+            }
+
+            //Возвращаем модель в представление
+            return View(model);
+        }
+
+        // POST: Admin/Pages/EditPage
+        [HttpPost]
+        public ActionResult EditPage(PageVM model)
+        {
+            //Проверяем модель на валидность
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            using (Db db = new Db())
+            {
+                //Получаем id странницы
+                int id = model.Id;
+
+                //Объявляем переменную краткого заголовка
+                string slug = "home";
+
+                //Проверяем страницу по id
+                PagesDTO dto = db.Pages.Find(id);
+
+                //Присваиваем название из полученной модели в DTO
+                dto.Title = model.Title;
+
+                //Проверяем краткий заголовок и присваиваем его, если это необходимо
+                if (model.Slug != "home")
+                {
+                    if (String.IsNullOrWhiteSpace(model.Slug))
+                    {
+                        slug = model.Title.Replace(" ", "-").ToLower();
+                    }
+                    else
+                    {
+                        slug = model.Slug.Replace(" ", "-").ToLower();
+                    }
+                }
+
+                //Проверяем Slug и Title на уникальность
+                if (db.Pages.Where(x => x.Id != id).Any(x => x.Title == model.Title))
+                {
+                    ModelState.AddModelError("", "Такой заголовок уже существует");
+                    return View(model);
+                }
+                else if (db.Pages.Where(x => x.Id != id).Any(x => x.Slug == slug))
+                {
+                    ModelState.AddModelError("", "Такое Краткое описание уже существует");
+                    return View(model);
+                }
+
+                //Записываем остальные значения в класс DTO
+                dto.Slug = slug;
+                dto.Body = model.Body;
+                dto.HasSidebar = model.HasSidebar;
+
+                //Сохраняем изменения в БД
+                db.SaveChanges();
+            }
+
+            //Устанавливаем сообщение в TempData
+            TempData["M"] = "Вы отредактировали эту страницу.";
+
+            //Переадресация пользователя
+            return RedirectToAction("EditPage");
+        }
+
+        // GET: Admin/Pages/PageDetails/id
+        [HttpGet]
+        public ActionResult PageDetails(int id)
+        {
+            //Объявляем модель PageVM
+            PageVM model;
+
+            using (Db db = new Db())
+            {
+                //Получаем страницу
+                PagesDTO dto = db.Pages.Find(id);
+
+                //Подтверждаем, что страница доступна
+                if (dto == null)
+                {
+                    return Content("Страница е существует.");
+                }
+
+                //Присваиваем модели информацию из базы
+                model = new PageVM(dto);
+            }
+
+            //Возвращаем модель в представление
+            return View(model);
         }
     }
 } 

@@ -33,7 +33,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Body, new { @class = "form-control" })
+                @Html.TextAreaFor(model => model.Body, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -50,12 +50,12 @@
 
         <div class="form-group">
             <div class="offset-2 col">
-                <input type="submit" value="Add Pages" class="btn btn-default" />
+                <input type="submit" value="AddPage" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Pages", "Index")
 </div>
