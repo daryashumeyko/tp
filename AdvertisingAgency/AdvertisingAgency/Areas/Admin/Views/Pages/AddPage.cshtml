@@ -6,10 +6,10 @@
 
 <h2>Добавить новую страницу</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>PageVM</h4>
         <hr />
@@ -50,7 +50,7 @@
 
         <div class="form-group">
             <div class="offset-2 col">
-                <input type="submit" value="AddPage" class="btn btn-default" />
+                <input type="submit" value="Добавить страницу" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -59,3 +59,11 @@
 <div>
     @Html.ActionLink("Back to Pages", "Index")
 </div>
+
+<!--Скрипт подмены для CKEditor-->
+@section Scripts
+{
+    <script>
+       CKEDITOR.replace("Body")
+    </script>
+}

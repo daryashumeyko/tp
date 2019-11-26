@@ -209,5 +209,96 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
             //Возвращаем модель в представление
             return View(model);
         }
+
+        // GET: Admin/Pages/DeletePage/id
+        public ActionResult DeletePage(int id)
+        {
+            //Подключение к бд
+            using (Db db = new Db())
+            {
+                //Получение страницы
+                PagesDTO dto = db.Pages.Find(id);
+
+                //Удаление страницы
+                db.Pages.Remove(dto);
+
+                //Сохранение изменений в бд
+                db.SaveChanges();
+            }
+            //Оповещение об удалении
+            TempData["M"] = "Вы успешно удалили страницу";
+
+            //Переадресовка пользователя
+            return RedirectToAction("Index");
+        }
+
+        //Сортировка
+        // POST: Admin/Pages/ReorderPages
+        [HttpPost]
+        public void ReorderPages(int [] id)
+        {
+            //Подключение к бд
+            using (Db db = new Db())
+            {
+                //Реализуем начальный счетчик
+                int count = 1;
+
+                //Инициализируем модель данных
+                PagesDTO dto;
+            
+                //Устанавливаем сортировку для каждой страницы
+                foreach (var pageId in id)
+                {
+                    dto = db.Pages.Find(pageId);
+                    dto.Sorting = count;
+                    db.SaveChanges();
+                    count++;
+                }
+            }
+        }
+
+        // GET: Admin/Pages/EditSidebar
+        [HttpGet]
+        public ActionResult EditSidebar()
+        {
+            //Объявляем модель
+            SidebarVM model;
+
+            //Подключение к бд
+            using (Db db = new Db())
+            {
+                //Получаем данные из DTO
+                SidebarDTO dto = db.Sidebars.Find(1);
+
+                //Заполняем модель данными
+                model = new SidebarVM(dto);
+            }
+
+            //Возвращаем представление с моделью
+            return View(model); 
+        }
+
+        // POST: Admin/Pages/EditSidebar
+        [HttpPost]
+        public ActionResult EditSidebar(SidebarVM model)
+        {
+            //Подключение к бд 
+            using (Db db = new Db())
+            {
+                //Получаем данные из DTO
+                SidebarDTO dto = db.Sidebars.Find(1);
+
+                //Присваиваем данные в свойство Body
+                dto.Body = model.Body;
+
+                //Сохраняем
+                db.SaveChanges();
+            }
+            //Присваиваем сообщение в TempData
+            TempData["M"] = "Вы отредактировали боковую панель";
+
+            //Переадресовываем пользователя
+            return RedirectToAction("EditSidebar");
+        }
     }
 } 

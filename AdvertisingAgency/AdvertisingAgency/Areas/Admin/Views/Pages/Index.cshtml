@@ -6,7 +6,7 @@
 
 <h2>Страницы</h2>
 
-@if (TempData["M"] != null) 
+@if (TempData["M"] != null)    //вывод сообщения об изменении
 {
     <div class="alert alert-success">
         @TempData["M"]
@@ -14,39 +14,87 @@
 }
 
 <p>
-    @Html.ActionLink("Создать новую страницу", "AddPage", "", new { @class = "btn btn-success"})
+    @Html.ActionLink("Создать новую страницу", "AddPage", "", new { @class = "btn btn-success" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Title
-        </th>
-        <th>
-            Slug
-        </th>
-        <th>
-            Sidebar
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Slug)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HasSidebar)
-        </td>
-        <td>
-            @Html.ActionLink("Редактировать страницу", "EditPage", new { id=item.Id }) |
-            @Html.ActionLink("Просмотреть страницу", "PageDetails", new { id=item.Id }) |
-            @Html.ActionLink("Удалить страницу", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@if (!Model.Any())
+{
+    <h1 class="text-center"> Нет страниц </h1>
+}
+else
+{
+    <table class="table sorting" id="pages">
+        <tr class="home">
+            <th>
+                Название
+            </th>
+            <th>
+                Характеристика
+            </th>
+            <th>
+                Боковая панель
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr id="id_@item.Id" class="@item.Slug">
+                <td>
+                    @if (item.Slug != "home")
+                    {
+                        <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    }
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Slug)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HasSidebar)
+                </td>
+                <td>
+                    @Html.ActionLink("Редактировать страницу", "EditPage", new { id = item.Id }) |
+                    @Html.ActionLink("Просмотреть страницу", "PageDetails", new { id = item.Id })
+
+                    <!--Если Slug = home, не показывать кнопку удаления-->
+                    @if (item.Slug != "home")
+                     {
+                        string slash = "| ";
+                        @slash;
+                        @Html.ActionLink("Удалить страницу", "DeletePage", new { id = item.Id }, new { @class = "delete" })
+                     }
+                </td>
+            </tr>
+         }
+    </table>
 }
 
-</table>
+<!--Джава скрипт-->
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            /*подтверждение удаления страницы*/
+
+            $("a.delete").click(function () {
+                if (!confirm("Подтвердить удаление страницы")) return false;
+            });
+
+            /*Скрипт сортировки*/
+
+            $("table#pages tbody").sortable({
+                items: "tr:not(.home)",
+                placeholder: "ui-state-highlight", 
+                update: function () {
+                    var ids = $("table#page tbody").sortable('serialize');
+                    var url = "/Admin/Pages/ReorderPages";
+
+                    $.post(url, ids, function (date) {
+                    });
+                }
+            });
+        });
+    </script>
+}

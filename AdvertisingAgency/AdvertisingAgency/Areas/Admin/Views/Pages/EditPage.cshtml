@@ -33,7 +33,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Slug, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <!--Slug home только для чтения--> 
+                <!--Slug "home" только для чтения-->
                 @if (Model.Slug == "home")
                 {
                     @Html.EditorFor(model => model.Slug, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
@@ -42,7 +42,7 @@
                 {
                     @Html.EditorFor(model => model.Slug, new { htmlAttributes = new { @class = "form-control" } })
                 }
-                @Html.EditorFor(model => model.Slug, new { @class = "form-control" })
+
                 @Html.ValidationMessageFor(model => model.Slug, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -67,7 +67,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Edit Page" class="btn btn-default" />
+                <input type="submit" value="Редактировать страницу" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -76,3 +76,11 @@
 <div>
     @Html.ActionLink("Вернуться назад", "Index")
 </div>
+
+<!--Скрипт подмены для CKEditor-->
+@section Scripts
+{
+    <script>
+       CKEDITOR.replace("Body")
+    </script>
+}

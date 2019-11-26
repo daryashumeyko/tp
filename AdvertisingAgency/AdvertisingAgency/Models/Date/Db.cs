@@ -10,5 +10,7 @@ namespace AdvertisingAgency.Models.Date
         //наследуем DbContext для связи с Entity Framework
     {
         public DbSet<PagesDTO> Pages { get; set; } //связь между сущностью и БД
+
+        public DbSet<SidebarDTO> Sidebars { get; set; } //связь c БД
     }
 }
