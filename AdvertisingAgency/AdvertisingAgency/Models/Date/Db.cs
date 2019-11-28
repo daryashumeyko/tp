@@ -12,5 +12,8 @@ namespace AdvertisingAgency.Models.Date
         public DbSet<PagesDTO> Pages { get; set; } //связь между сущностью и БД
 
         public DbSet<SidebarDTO> Sidebars { get; set; } //связь c БД
+
+        //подключение таблицы Categories
+        public DbSet<CategoryDTO> Categories { get; set; }
     }
 }

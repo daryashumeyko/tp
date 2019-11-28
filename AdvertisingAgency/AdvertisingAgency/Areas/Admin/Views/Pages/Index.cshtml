@@ -88,10 +88,10 @@ else
                 items: "tr:not(.home)",
                 placeholder: "ui-state-highlight", 
                 update: function () {
-                    var ids = $("table#page tbody").sortable('serialize');
+                    var ids = $("table#pages tbody").sortable('serialize');
                     var url = "/Admin/Pages/ReorderPages";
 
-                    $.post(url, ids, function (date) {
+                    $.post(url, ids, function (data) {
                     });
                 }
             });

@@ -164,14 +164,17 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AgencyController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\PagesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Date\CategoryDTO.cs" />
     <Compile Include="Models\Date\Db.cs" />
     <Compile Include="Models\Date\PagesDTO.cs" />
     <Compile Include="Models\Date\SidebarDTO.cs" />
+    <Compile Include="Models\ViewModels\Agency\CategoryVM.cs" />
     <Compile Include="Models\ViewModels\Pages\PageVM.cs" />
     <Compile Include="Models\ViewModels\Pages\SidebarVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -187,6 +190,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images2\ajax-loader.gif" />
     <Content Include="Content\images\ui-icons_444444_256x240.png" />
     <Content Include="Content\images\ui-icons_555555_256x240.png" />
     <Content Include="Content\images\ui-icons_777620_256x240.png" />
@@ -876,6 +880,7 @@
     <Content Include="fileman\lang\sk.json" />
     <Content Include="fileman\lang\tr.json" />
     <Content Include="fileman\web.config" />
+    <Content Include="Areas\Admin\Views\Agency\Categories.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
