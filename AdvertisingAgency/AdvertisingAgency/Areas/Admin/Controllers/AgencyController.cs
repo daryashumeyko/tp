@@ -107,5 +107,49 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
             //Переадресация пользователя
             return RedirectToAction("Categories");
         }
+
+        // POST: Admin/Agency/RenameCategory/id
+        [HttpPost]
+        public string RenameCategory(string newCatName, int id)
+        {
+            //Подключение к бд
+            using (Db db = new Db())
+            {
+                //Проверка имени на уникальность
+                if (db.Categories.Any(x => x.Name == newCatName))
+                    return "titletaken";
+
+                //Получение всех данных из бд (модель DTO)
+                CategoryDTO dto = db.Categories.Find(id);
+
+                //Редактирование модели DTO
+                dto.Name = newCatName;
+                dto.Slug = newCatName.Replace(" ", "-").ToLower();
+
+                //Сохранение изменений
+                db.SaveChanges();
+            }
+
+                //Возвращаем слово
+                return "Ok";
+        }
+
+        //Создание метода добавления товаров
+        // GET: Admin/Agency/AddProduct
+        public ActionResult AddProduct()
+        {
+            //Объявление модели данных
+            ProductVM model = new ProductVM();
+
+            //Добавление списка категорий из бд в модель
+            using (Db db = new Db())
+            {
+                model.Categories = new SelectList(db.Categories.ToList(), dataValueField: "id", dataTextField: "Name");
+            }
+
+            //Возвращение модели в представление
+            return View(model);
+
+        }
     }
 }

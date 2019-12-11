@@ -302,3 +302,5 @@ C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency
 C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency\obj\Debug\AdvertisingAgency.csproj.CopyComplete
 C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency\obj\Debug\AdvertisingAgency.dll
 C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency\obj\Debug\AdvertisingAgency.pdb
+C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency\bin\JetBrains.Annotations.dll
+C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency\bin\JetBrains.Annotations.xml
