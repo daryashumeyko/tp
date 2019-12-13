@@ -35,14 +35,14 @@ namespace AdvertisingAgency.Models.ViewModels.Agency
         [DisplayName("Описание")]
         public string Description { get; set; }
         [DisplayName("Цена")]
-        public decimal Price { get; set; }
-        [Required]
+        public int Price { get; set; }
         public string CategoryName { get; set; }
+        [Required]
         [DisplayName("Категория")]
         public int CategoryId { get; set; }
         public string ImageName { get; set; }
 
         public IEnumerable<SelectListItem> Categories { get; set; }
-        public IEnumerable<String> GallaryImages { get; set; }
+        public IEnumerable<string> GallaryImages { get; set; }
     }
 }

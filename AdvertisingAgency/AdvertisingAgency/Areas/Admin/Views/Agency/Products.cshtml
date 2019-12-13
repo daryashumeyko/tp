@@ -1,0 +1,87 @@
+﻿@model IEnumerable<AdvertisingAgency.Models.ViewModels.Agency.ProductVM>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+<link href="~/Content/PagedList.css" rel="stylesheet"ctype="text/css" />
+
+<h2>Реклама</h2>
+
+<!--Сортировка страниц-->
+<select id="SelectCategory" name="Selectcategory">
+    <option value="0">Все</option>
+    @foreach(var item in ViewBag.Categories)
+    {
+        if (ViewBag.SelectedCat == item.Value)
+        {
+            <option selected="selected" value="@item.Value">@item.Text</option>
+        }
+        else
+        {
+            <option value="@item.Value">@item.Text</option>
+        }
+    }
+</select>
+<br/><br />
+
+<p>
+    @Html.ActionLink(linkText: "Добавить новую рекламу", actionName: "AddProduct", routeValues: "", htmlAttributes: new { @class="btn btn-success"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Название
+        </th>
+        <th>
+            Описание
+        </th>
+        <th>
+            Цена
+        </th>
+        <th>
+            Картинка
+        </th>
+        <th></th>
+    </tr>
+
+    <!--Метод вывода товаров-->
+    @foreach (var product in ViewBag.OnePageOfProducts)
+    {
+    <tr>
+        <td>
+            @product.Name
+        </td>
+        <td>
+            @product.Description
+        </td>
+        <td>
+            @product.Price
+        </td>
+        <td>
+            <a href="/admin/agency/EditProduct/@product.Id">
+                @if (product.ImageName == null)
+                {
+                    <img src="/Content/images2/no_image.png" /> <!--Если нет картинки то будет картинка по умолчанию-->
+                }
+                else
+                {
+                    <!--Ссылка на редактирование по нажатию картинкии-->
+                    <img src="/Images/Uploads/Products/@product.Id/Small/@product.ImageName" /> <!--Уменьшенная картинка-->    
+                }
+            </a>
+        </td>
+
+        <td>
+            @Html.ActionLink("Редактировать рекламу", "EditProduct", new { id = product.Id }, new { @class = "btn btn-info"}) |
+            @Html.ActionLink("Удалить рекламу", "DeleteProduct", new { id = product.Id }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+    }
+</table>
+
+
+<!--Постраничная навигация-->
+@Html.PagedListPager((IPagedList)ViewBag.onePageOfProducts, generatePageUrl: page => Url.Action("Products", routeValues: new { page, catId = ViewBag.SelectedCat }))

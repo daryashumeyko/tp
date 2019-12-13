@@ -6,7 +6,14 @@
 
 <h2>Добавить рекламу</h2>
 
-@using (Html.BeginForm())
+@if (TempData["M"] != null)    //вывод сообщения об изменении
+{
+    <div class="alert alert-success">
+        @TempData["M"]
+    </div>
+}
+
+@using (Html.BeginForm(actionName:"AddProduct", controllerName:"Agency", method: FormMethod.Post, htmlAttributes: new {enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
