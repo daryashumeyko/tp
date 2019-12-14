@@ -256,7 +256,6 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
                         return View(model);
                     }
                 }
-            
 
                 //Объявление переменной с именем изображения
                 string imageName = file.FileName;
@@ -317,11 +316,46 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
             }
 
             //Установка постраничной навигации
-            var onePageOfProducts = listOfProductVM.ToPagedList(pageNumber, pageSize: 3);
+            var onePageOfProducts = listOfProductVM.ToPagedList(pageNumber, pageSize: 5);
             ViewBag.onePageOfProducts = onePageOfProducts;
 
             //Возврат представления с данными
             return View(listOfProductVM);
+        }
+
+        //Создание метода редактирования товаров
+        // GET: Admin/Agency/EditProduct
+        [HttpGet]
+        public ActionResult EditProduct(int id)
+        {
+            //Объявление модели ProductVM
+            ProductVM model;
+
+            using (Db db = new Db())
+            {
+                //Получение рекламы
+                ProductDTO dto = db.Products.Find(id);
+
+                //Проверка доступа рекламы
+                if (dto == null)
+                {
+                    return Content("Такая реклама не существует");
+                }
+
+                //Инициализация модели данных
+                model = new ProductVM(dto);
+
+                //Создание ссписка категорий
+                model.Categories = new SelectList(db.Categories.ToList(), "Id", "Name");
+
+                //Получение всех изображений из галереи
+                model.GalleryImages = Directory
+                    .EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Small"))
+                    .Select(fn => Path.GetFileName(fn));
+            }
+
+            //Возврат модели в представление
+            return View(model);
         }
     }
 }

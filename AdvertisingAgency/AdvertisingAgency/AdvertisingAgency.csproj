@@ -493,6 +493,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="ApplicationInsights.config" />
+    <Content Include="Images\no_image.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -896,6 +897,7 @@
     <Content Include="Areas\Admin\Views\Agency\Categories.cshtml" />
     <Content Include="Areas\Admin\Views\Agency\AddProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Agency\Products.cshtml" />
+    <Content Include="Areas\Admin\Views\Agency\EditProduct.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

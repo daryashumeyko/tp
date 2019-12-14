@@ -6,14 +6,15 @@
 
 @using PagedList.Mvc;
 @using PagedList;
-<link href="~/Content/PagedList.css" rel="stylesheet"ctype="text/css" />
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <h2>Реклама</h2>
 
 <!--Сортировка страниц-->
 <select id="SelectCategory" name="Selectcategory">
     <option value="0">Все</option>
-    @foreach(var item in ViewBag.Categories)
+    @foreach (var item in ViewBag.Categories)
     {
         if (ViewBag.SelectedCat == item.Value)
         {
@@ -25,10 +26,10 @@
         }
     }
 </select>
-<br/><br />
+<br /><br />
 
 <p>
-    @Html.ActionLink(linkText: "Добавить новую рекламу", actionName: "AddProduct", routeValues: "", htmlAttributes: new { @class="btn btn-success"})
+    @Html.ActionLink(linkText: "Добавить новую рекламу", actionName: "AddProduct", routeValues: "", htmlAttributes: new { @class = "btn btn-success" })
 </p>
 <table class="table">
     <tr>
@@ -50,38 +51,63 @@
     <!--Метод вывода товаров-->
     @foreach (var product in ViewBag.OnePageOfProducts)
     {
-    <tr>
-        <td>
-            @product.Name
-        </td>
-        <td>
-            @product.Description
-        </td>
-        <td>
-            @product.Price
-        </td>
-        <td>
-            <a href="/admin/agency/EditProduct/@product.Id">
-                @if (product.ImageName == null)
-                {
-                    <img src="/Content/images2/no_image.png" /> <!--Если нет картинки то будет картинка по умолчанию-->
-                }
-                else
-                {
-                    <!--Ссылка на редактирование по нажатию картинкии-->
-                    <img src="/Images/Uploads/Products/@product.Id/Small/@product.ImageName" /> <!--Уменьшенная картинка-->    
-                }
-            </a>
-        </td>
+        <tr>
+            <td>
+                @product.Name
+            </td>
+            <td>
+                @product.Description
+            </td>
+            <td>
+                @product.Price
+            </td>
+            <td>
+                <a href="/admin/agency/EditProduct/@product.Id">
+                    @if (product.ImageName == null)
+                    {
+                        <img src="/Content/images2/no_image.png" /> <!--Если нет картинки то будет картинка по умолчанию-->
+                    }
+                    else
+                    {
+                        <!--Ссылка на редактирование по нажатию картинкии-->
+                        <img src="/Images/Uploads/Products/@product.Id/Small/@product.ImageName" /> <!--Уменьшенная картинка-->
+                    }
+                </a>
+            </td>
 
-        <td>
-            @Html.ActionLink("Редактировать рекламу", "EditProduct", new { id = product.Id }, new { @class = "btn btn-info"}) |
-            @Html.ActionLink("Удалить рекламу", "DeleteProduct", new { id = product.Id }, new { @class = "btn btn-danger" })
-        </td>
-    </tr>
+            <td>
+                @Html.ActionLink("Редактировать рекламу", "EditProduct", new { id = product.Id }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Удалить рекламу", "DeleteProduct", new { id = product.Id }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
     }
 </table>
 
 
 <!--Постраничная навигация-->
 @Html.PagedListPager((IPagedList)ViewBag.onePageOfProducts, generatePageUrl: page => Url.Action("Products", routeValues: new { page, catId = ViewBag.SelectedCat }))
+
+@section Scripts{ 
+    <script>
+        $(function () {
+
+            /* Выбрать продукт из категории */
+
+            $("#SelectCategory").on("change", function () {
+                var url = $(this).val();
+
+                if (url) {
+                    window.location = "/admin/agency/Products?catId=" + url;
+                }
+                return false;
+            });
+
+            /* Confirm page deletion */
+
+            $("a.delete").click(function () {
+                if (!confirm("Confirm page deletion")) return false;
+            });
+            
+        });
+    </script>
+}

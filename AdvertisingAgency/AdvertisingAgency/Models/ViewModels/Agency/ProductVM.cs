@@ -43,6 +43,6 @@ namespace AdvertisingAgency.Models.ViewModels.Agency
         public string ImageName { get; set; }
 
         public IEnumerable<SelectListItem> Categories { get; set; }
-        public IEnumerable<string> GallaryImages { get; set; }
+        public IEnumerable<string> GalleryImages { get; set; }
     }
 }
