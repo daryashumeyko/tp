@@ -24,7 +24,10 @@
                     @Html.ActionLink("Боковая панель", "EditSidebar", "Pages", "", new { @class = "nav-link" })
                 </li>
                 <li class="nav-item">
-                    <!--<a class="nav-link" href="#">Pricing</a>-->
+                    @Html.ActionLink("Категории", "Categories", "Agency", "", new { @class = "nav-link" })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Реклама", "Products", "Agency", "", new { @class = "nav-link" })
                 </li>
             </ul>
 

@@ -40,6 +40,7 @@ namespace AdvertisingAgency.Models.ViewModels.Agency
         [Required]
         [DisplayName("Категория")]
         public int CategoryId { get; set; }
+        [DisplayName("Картинка")]
         public string ImageName { get; set; }
 
         public IEnumerable<SelectListItem> Categories { get; set; }

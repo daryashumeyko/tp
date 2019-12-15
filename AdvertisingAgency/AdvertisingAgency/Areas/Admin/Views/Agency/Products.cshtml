@@ -77,7 +77,7 @@
 
             <td>
                 @Html.ActionLink("Редактировать рекламу", "EditProduct", new { id = product.Id }, new { @class = "btn btn-info" }) |
-                @Html.ActionLink("Удалить рекламу", "DeleteProduct", new { id = product.Id }, new { @class = "btn btn-danger" })
+                @Html.ActionLink("Удалить рекламу", "DeleteProduct", new { id = product.Id }, new { @class = "delete btn btn-danger" })
             </td>
         </tr>
     }
@@ -102,10 +102,10 @@
                 return false;
             });
 
-            /* Confirm page deletion */
+            /* Подтверждение удаления */
 
             $("a.delete").click(function () {
-                if (!confirm("Confirm page deletion")) return false;
+                if (!confirm("Подтвердите удаление")) return false;
             });
             
         });

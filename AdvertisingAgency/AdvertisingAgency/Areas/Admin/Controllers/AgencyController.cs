@@ -357,5 +357,208 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
             //Возврат модели в представление
             return View(model);
         }
+
+        //Создание метода редактирования товаров
+        // POST: Admin/Agency/EditProduct
+        [HttpPost]
+        public ActionResult EditProduct(ProductVM model, HttpPostedFileBase file)
+        {
+            //Получение id продукта
+            int id = model.Id;
+
+            //Заполнение списка ктегориями и изображениями
+            using (Db db = new Db())
+            {
+                model.Categories = new SelectList(db.Categories.ToList(), "Id", "Name");
+            }
+
+            model.GalleryImages = Directory
+                    .EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Small"))
+                    .Select(fn => Path.GetFileName(fn));
+
+            //Проверка модели на валидность
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            //Проверка имени продукта на уникальность
+            using (Db db = new Db())
+            {
+                if (db.Products.Where(x => x.Id != id).Any(x => x.Name == model.Name))
+                {
+                    ModelState.AddModelError("", "Это название рекламы занято");
+                    return View(model);
+                }
+            }
+
+            //Обновление продукта
+            using (Db db = new Db())
+            {
+                ProductDTO dto = db.Products.Find(id);
+
+                dto.Name = model.Name;
+                dto.Slug = model.Name.Replace(" ", "-").ToLower();
+                dto.Description = model.Description;
+                dto.Price = model.Price;
+                dto.CategoryId = model.CategoryId;
+                dto.ImageName = model.ImageName;
+
+                CategoryDTO catDTO = db.Categories.FirstOrDefault(x => x.Id == model.CategoryId);  //Присваивание текущей категории модели
+                dto.CategoryName = catDTO.Name;
+
+                db.SaveChanges();
+            }
+
+            //Установка сообщения в TempData
+            TempData["M"] = "Вы изменили рекламу";
+
+            //Логика обработки изображений
+            #region Image Upload
+
+            //Проверка загрузки файла
+            if (file != null && file.ContentLength > 0)
+            {
+                //Получение расширения файла
+                string ext = file.ContentType.ToLower();
+
+                //Проверка расширения
+                if (ext != "image/jpg" &&
+                    ext != "image/png" &&
+                    ext != "image/jpeg" &&
+                    ext != "image/pjpeg" &&
+                    ext != "image/gif" &&
+                    ext != "image/x-png")
+                {
+                    using (Db db = new Db())
+                    {
+                        ModelState.AddModelError("", "Картинка не загружена. Недопустимое расширение.");
+                        return View(model);
+                    }
+                }
+
+                //Установка путей загрузки
+                var originalDirectory = new DirectoryInfo(string.Format($"{Server.MapPath(@"\")}Images\\Uploads"));
+
+                var pathString1 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString());
+                var pathString2 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Small");
+
+                //Удаление существующих путей и директорий
+                DirectoryInfo di1 = new DirectoryInfo(pathString1);
+                DirectoryInfo di2 = new DirectoryInfo(pathString2);
+
+                //удаление в основной директории
+                foreach (var file2 in di1.GetFiles())
+                {
+                    file2.Delete();
+                }
+
+                //Удаление цменьшенных изображений
+                foreach (var file3 in di1.GetFiles())
+                {
+                    file3.Delete();
+                }
+
+                //Сохранение имени изображения
+                string imageName = file.FileName;
+
+                using (Db db = new Db())
+                {
+                    ProductDTO dto = db.Products.Find(id);
+                    dto.ImageName = imageName;
+
+                    db.SaveChanges();
+                }
+
+                //Сохранение оригинала и уменьшенной версии
+                var path = string.Format($"{pathString1}\\{imageName}");   //к оригинальному изображению
+                var path2 = string.Format($"{pathString2}\\{imageName}");  //к уменьшенному
+
+                //Сохранение оригинального изображения
+                file.SaveAs(path);
+
+                //Создание и сохранение уменьшенной картинки
+                WebImage img = new WebImage(file.InputStream);
+                img.Resize(width: 200, height: 200);
+                img.Save(path2);
+            }
+            #endregion
+
+            //Переадресация пользователя
+            return RedirectToAction("EditProduct");
+        }
+
+        //Создание метода удаления товаров
+        // POST: Admin/Agency/ DeleteProduct
+        public ActionResult DeleteProduct(int id)
+        {
+            //Удаление рекламы из бд
+            using (Db db = new Db())
+            {
+                ProductDTO dto = db.Products.Find(id);
+                db.Products.Remove(dto);
+
+                db.SaveChanges();
+            }
+
+            //Удаление директории с изображениями товара
+            var originalDirectory = new DirectoryInfo(string.Format($"{Server.MapPath(@"\")}Images\\Uploads"));
+            var pathString = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString());
+
+            if (Directory.Exists(pathString))
+                Directory.Delete(pathString, true);     //удаление папки и всех подкаталогов
+
+            //Переадресация пользователя
+            return RedirectToAction("Products");
+        }
+
+
+        //Создание метода добавления изображений в галерею
+        // POST: Admin/Agency/SaveGalleryImages/id
+        [HttpPost]
+        public void SaveGalleryImages(int id)
+        {
+            //Перебор всех полученных файлов изображения
+            foreach (string fileName in Request.Files)
+            {
+                //Инициализация файлов
+                HttpPostedFileBase file = Request.Files[fileName];
+
+                //Проверка на null
+                if (file != null && file.ContentLength > 0)
+                {
+                    //Назначение путей к директориям
+                    var originalDirectory = new DirectoryInfo(string.Format($"{Server.MapPath(@"\")}Images\\Uploads"));
+
+                    string pathString1 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Gallery");
+                    string pathString2 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Gallery\\Small");
+
+                    //Назаначение путей изображений
+                    var path = string.Format($"{pathString1}\\{file.FileName}");
+                    var path2 = string.Format($"{pathString2}\\{file.FileName}");
+
+                    //Сохранение оригинальных изображений и уменьшенных копий
+                    file.SaveAs(path);
+
+                    WebImage img = new WebImage(file.InputStream);
+                    img.Resize(200, 200);
+                    img.Save(path2);
+                }
+            }
+        }
+
+        //Создание метода удаления изображений из галереи
+        // POST: Admin/Agency/DeleteImage/id/imageName
+        public void DeleteImage(int id, string imageName)
+        {
+            string fullPath1 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/" + imageName);
+            string fullPath2 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/Small/" + imageName);
+
+            if (System.IO.File.Exists(fullPath1))
+                System.IO.File.Delete(fullPath1);
+
+            if (System.IO.File.Exists(fullPath2))
+                System.IO.File.Delete(fullPath2);
+        }
     }
 }
