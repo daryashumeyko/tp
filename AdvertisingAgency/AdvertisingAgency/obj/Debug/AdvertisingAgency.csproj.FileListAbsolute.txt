@@ -307,4 +307,3 @@ C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency
 C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency\bin\PagedList.Mvc.dll
 C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency\bin\PagedList.xml
 C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency\bin\PagedList.Mvc.xml
-C:\Users\Дарья\Documents\vlsu_github\tp\AdvertisingAgency\AdvertisingAgency\obj\Debug\AdvertisingAgency.csprojAssemblyReference.cache

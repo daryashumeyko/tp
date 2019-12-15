@@ -13,11 +13,27 @@ namespace AdvertisingAgency
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
+            routes.MapRoute("SidebarPartial", "Pages/SidebarPartial", new { controller = "Pages", action = "SidebarPartial" },
+                new[] { "AdvertisingAgency.Controllers" });
+
+            routes.MapRoute("Agency", "Agency/{action}/{name}", new { controller = "Agency", action = "Index", name = UrlParameter.Optional },
+                new[] { "AdvertisingAgency.Controllers" });
+
+            routes.MapRoute("PagesMenuPartial", "Pages/PagesMenuPartial", new { controller = "Pages", action = "PagesMenuPartial" }, 
+                new[] { "AdvertisingAgency.Controllers" });
+
+            routes.MapRoute("Pages", "{page}", new { controller = "Pages", action = "Index" }, 
+                new[] { "AdvertisingAgency.Controllers" });
+
+            routes.MapRoute("Default", "", new { controller = "Pages", action = "Index" }, 
+                new[] { "AdvertisingAgency.Controllers" });
+            
+
+            //.MapRoute(
+            //    name: "Default",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            //);
         }
     }
 }

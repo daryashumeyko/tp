@@ -278,7 +278,7 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
 
                 //Создание и сохранение уменьшенной картинки
                 WebImage img = new WebImage(file.InputStream);
-                img.Resize(width:200, height:200);
+                img.Resize(200, 200).Crop(1, 1);
                 img.Save(path2);
             }
 
@@ -479,7 +479,7 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
 
                 //Создание и сохранение уменьшенной картинки
                 WebImage img = new WebImage(file.InputStream);
-                img.Resize(width: 200, height: 200);
+                img.Resize(200, 200).Crop(1, 1);
                 img.Save(path2);
             }
             #endregion
@@ -512,7 +512,6 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
             return RedirectToAction("Products");
         }
 
-
         //Создание метода добавления изображений в галерею
         // POST: Admin/Agency/SaveGalleryImages/id
         [HttpPost]
@@ -541,7 +540,7 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
                     file.SaveAs(path);
 
                     WebImage img = new WebImage(file.InputStream);
-                    img.Resize(200, 200);
+                    img.Resize(200, 200).Crop(1,1);
                     img.Save(path2);
                 }
             }
