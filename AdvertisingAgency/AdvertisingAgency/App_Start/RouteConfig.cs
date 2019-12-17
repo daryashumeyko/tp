@@ -13,6 +13,9 @@ namespace AdvertisingAgency
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute("Cart", "Cart/{action}/{id}", new { controller = "Cart", action = "Index", id = UrlParameter.Optional },
+                new[] { "AdvertisingAgency.Controllers" });
+
             routes.MapRoute("SidebarPartial", "Pages/SidebarPartial", new { controller = "Pages", action = "SidebarPartial" },
                 new[] { "AdvertisingAgency.Controllers" });
 

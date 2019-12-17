@@ -1,0 +1,64 @@
+﻿@model AdvertisingAgency.Models.ViewModels.Agency.ProductVM
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<h2>@Model.Name</h2>
+<br />
+
+<div class="row">
+    <div class="col-sm-12 col-md-4">
+        <img src="~/Images/Uploads/Products/@Model.Id/Small/@Model.ImageName" />
+    </div>
+
+
+
+    <div class="col-sm-12 col-md-5">
+
+        @Html.DisplayFor(model => model.Description)
+    </div>
+    <div class="col-sm-12 col-md-3">
+
+        @Html.DisplayFor(model => model.Price) p.
+
+        <br />
+
+        <div class="addtocart">
+            <a href="#" class="addtocart btn btn-success">Добавить в корзину</a>
+            <div class="ajaxmsg">
+                Реклама была добавлена в корзину.
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <hr />
+
+    <div class="row">
+        <h3>Галерея рекламы</h3>
+        <div class="col-sm-12" fancyboxdiv">
+            <br /> <br />
+            <div class="row">
+                @foreach (var item in Model.GalleryImages)
+                {
+                    <div class="col">
+                        <a class="fancybox" rel="gallery1" href="/Images/Uploads/Products/@Model.Id/Gallery/@item">
+                            <img src="~/Images/Uploads/Products/@Model.Id/Gallery/Small/@item" />
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @section Scripts{
+        <link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery.fancybox.js"></script>
+
+        <script>
+            $(function () {
+                $(".fancybox").fancybox();
+            });
+        </script>
+    }

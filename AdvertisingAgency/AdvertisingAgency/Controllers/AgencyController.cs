@@ -2,6 +2,7 @@
 using AdvertisingAgency.Models.ViewModels.Agency;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -32,7 +33,7 @@ namespace AdvertisingAgency.Controllers
             return PartialView("_CategoryMenuPartial", categoryVMList);
         }
 
-        // GET: Agency/Category/name
+        // GET: Agency/Category/name Вывод рекламы по категориям
         public ActionResult Category(string name)
         {
             //Объявление списка типа list
@@ -64,6 +65,43 @@ namespace AdvertisingAgency.Controllers
 
             //Возврат представления с моделью
             return View(productVMList);
+        }
+
+        // GET: Agency/Product-details/name
+        [ActionName("product-details")]
+        public ActionResult ProductDetails(string name)
+        {
+            //Объявление модели DTO и VM
+            ProductDTO dto;
+            ProductVM model;
+
+            //Инициализация id продукта
+            int id = 0;
+
+            using (Db db = new Db())
+            {
+                //Проверка доступности продукта
+                if (! db.Products.Any(x => x.Slug.Equals(name)))
+                {
+                    return RedirectToAction("Index", "Agency");
+                }
+
+                //Инициализируем модель DTO данными
+                dto = db.Products.Where(x => x.Slug == name).FirstOrDefault();
+
+                //Получение id 
+                id = dto.Id;
+
+                //Инициализируем модель VM данными
+                model = new ProductVM(dto);
+            }
+
+            //Получение изображении из галереи
+            model.GalleryImages = Directory.EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Small"))
+                .Select(fn => Path.GetFileName(fn));
+
+            //Возврат модели в представление
+            return View("ProductDetails", model);
         }
     }
 }
