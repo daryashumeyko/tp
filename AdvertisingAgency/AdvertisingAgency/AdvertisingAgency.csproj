@@ -974,6 +974,7 @@
     <Content Include="Views\Agency\ProductDetails.cshtml" />
     <Content Include="Views\Cart\_CartPartial.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Cart\_AddToCartPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />

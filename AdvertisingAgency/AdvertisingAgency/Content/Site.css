@@ -46,3 +46,8 @@ div.ajaxmsg {
 span.loades {
     display: none;
 }
+
+.ib {
+    display: inline-block !important;
+}
+

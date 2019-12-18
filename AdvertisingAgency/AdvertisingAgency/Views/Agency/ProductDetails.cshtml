@@ -26,6 +26,9 @@
 
         <div class="addtocart">
             <a href="#" class="addtocart btn btn-success">Добавить в корзину</a>
+            <span class="loader">
+                <img src="~/Content/images2/ajax-loader.gif" height="100" width="150" />
+            </span>
             <div class="ajaxmsg">
                 Реклама была добавлена в корзину.
             </div>
@@ -61,4 +64,30 @@
                 $(".fancybox").fancybox();
             });
         </script>
+
+        <script>
+        /*Добавление в корзину (считает нажатия на добавить в корзину)*/
+            $(function () {
+                $("a.addtocart").click(function (e) {
+                    e.preventDefault();
+
+                    $("span.loader").addClass("ib");
+
+                    var url = "/cart/AddToCartPartial";
+
+                    $.get(url, { id: @Model.Id
+                    }, function (data) {
+                        $(".ajaxcart").html(data);
+                    }).done(function () {
+                        $("span.loader").removeClass("ib");
+                        $("div.ajaxmsg").addClass("ib");
+
+                        setTimeout(function () {
+                            $("div.ajaxmsg").fadeOut("fast");
+                            $("div.ajaxmsg").removeClass("ib");
+                        }, 2000);
+                    });
+                });
+            });
+        </script>   
     }
