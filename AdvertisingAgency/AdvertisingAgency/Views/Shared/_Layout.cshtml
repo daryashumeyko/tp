@@ -19,6 +19,30 @@
 
                 @Html.Action("PagesMenuPartial", "Pages")
 
+                <!--Если пользователь авторизован-->
+                @if (Request.IsAuthenticated)
+                {
+                <li> @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) @*<a href="/account/logout">Выйти</a>*@ </li>
+                }
+                else
+                {
+                    //Если неавторизованный пользователь находится на странице login, ссылка активна
+                    if (ViewBag.Title == "Login")
+                    {
+                        <li class="navbar-text"> @Html.ActionLink("Login", "Login", "Account", null, new { @class = "active", style = "text-decoration: none" }) </li>
+                    }
+                    //Если неавторизованный пользователь находится на любой другой странице, ссылка не активна
+                    else
+                    {
+                        <li class="navbar-text"> @Html.ActionLink("Login", "Login", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
+                    }
+                }
+
+                @if (Request.IsAuthenticated)
+                {
+                    <li> @Html.Action("UserNavPartial", "Account", new { area = "" }) </li>
+                }
+
             </ul>
             <span class="navbar-text">
                 @Html.Action("CartPartial", "Cart")
