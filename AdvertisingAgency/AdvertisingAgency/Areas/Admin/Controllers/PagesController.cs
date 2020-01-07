@@ -263,7 +263,7 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
         //Создание метода списка клиентов
         // GET: Admin/Pages/Clients
         [HttpGet]
-        public ActionResult Clients(int? userId)    //?может быть null
+        public ActionResult Clients()
         {
             //Объявление модели UserVM типа List
             List<UserVM> listOfUsersVM;
@@ -271,11 +271,11 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
             //Подключение к бд
             using (Db db = new Db())
             {
-                UserRoleDTO rdto = db.UserRoles.FirstOrDefault(x => x.UserId == userId);
+                UserRoleDTO rdto = db.UserRoles.FirstOrDefault(x => x.RoleId == 2);
 
                 //Инициализирование list и заполнение данными
                listOfUsersVM = db.Users.ToArray()
-                     .Where(x => userId == null || rdto.RoleId == 1 ||rdto.UserId == userId)
+                     .Where(x => rdto.UserId == x.Id)
                      .Select(x => new UserVM(x))
                      .ToList();
             }

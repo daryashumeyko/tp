@@ -129,6 +129,8 @@ namespace AdvertisingAgency.Controllers
                     FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
                     UserDTO dto = db.Users.FirstOrDefault(x => x.Username == model.Username);
                     UserRoleDTO rdto = db.UserRoles.FirstOrDefault(x => x.UserId == dto.Id);
+                    HttpCookie cookie = new HttpCookie("Role", rdto.RoleId.ToString());
+                    Response.Cookies.Add(cookie);
                     if (rdto.RoleId == 1) return Redirect("~/Admin/Dashboard/Index");
                     else return Redirect("~/Cart/Index");
                 }

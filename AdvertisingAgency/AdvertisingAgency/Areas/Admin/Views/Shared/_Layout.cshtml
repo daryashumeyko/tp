@@ -29,6 +29,13 @@
                 <li class="nav-item">
                     @Html.ActionLink("Список клиентов", "Clients", "Pages", "", new { @class = "nav-link" })
                 </li>
+                <!--Если пользователь авторизован-->
+                @if (Request.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Account/Logout" style="text-decoration: none">Выйти</a>
+                    </li>
+                }
             </ul>
         </div>
     </nav>

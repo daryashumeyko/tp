@@ -76,7 +76,7 @@ namespace AdvertisingAgency.Controllers
 
         public ActionResult AddToCartPartial(int id)
         {
-            //Объявление List типа CartVM   (если сессия пуст асоздаётся новый лист)
+            //Объявление List типа CartVM   (если сессия пуста создаётся новый лист)
             List<CartVM> cart = Session["cart"] as List<CartVM> ?? new List<CartVM>();
 
             //Объявление модели CartVM
@@ -123,7 +123,7 @@ namespace AdvertisingAgency.Controllers
             model.Quantity = qty;
             model.Price = price;
 
-            //Созранение состояния корзины в сессию
+            //Сохранение состояния корзины в сессию
             Session["cart"] = cart;
 
             //Возврат частичного представления с моделью
