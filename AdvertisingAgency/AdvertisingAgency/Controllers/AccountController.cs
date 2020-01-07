@@ -125,8 +125,12 @@ namespace AdvertisingAgency.Controllers
                 }
                 else
                 {
+                    //Распределение пользователей по ролям при входе
                     FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
-                    return Redirect(FormsAuthentication.GetRedirectUrl(model.Username, model.RememberMe));
+                    UserDTO dto = db.Users.FirstOrDefault(x => x.Username == model.Username);
+                    UserRoleDTO rdto = db.UserRoles.FirstOrDefault(x => x.UserId == dto.Id);
+                    if (rdto.RoleId == 1) return Redirect("~/Admin/Dashboard/Index");
+                    else return Redirect("~/Cart/Index");
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using AdvertisingAgency.Models.Date;
+using AdvertisingAgency.Models.ViewModels.Account;
 using AdvertisingAgency.Models.ViewModels.Pages;
 using System;
 using System.Collections.Generic;
@@ -80,7 +81,7 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
                 //Присваиваем оставшиеся значения модели
                 dto.Slug = slug;
                 dto.Body = model.Body;
-                dto.HasSidebar = model.HasSidebar;
+
                 dto.Sorting = 100;
 
                 //Сохраняем модель в БД
@@ -171,7 +172,7 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
                 //Записываем остальные значения в класс DTO
                 dto.Slug = slug;
                 dto.Body = model.Body;
-                dto.HasSidebar = model.HasSidebar;
+
 
                 //Сохраняем изменения в БД
                 db.SaveChanges();
@@ -199,7 +200,7 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
                 //Подтверждаем, что страница доступна
                 if (dto == null)
                 {
-                    return Content("Страница е существует.");
+                    return Content("Страница не существует.");
                 }
 
                 //Присваиваем модели информацию из базы
@@ -257,48 +258,30 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
             }
         }
 
-        // GET: Admin/Pages/EditSidebar
-        [HttpGet]
-        public ActionResult EditSidebar()
-        {
-            //Объявляем модель
-            SidebarVM model;
 
+
+        //Создание метода списка клиентов
+        // GET: Admin/Pages/Clients
+        [HttpGet]
+        public ActionResult Clients(int? userId)    //?может быть null
+        {
+            //Объявление модели UserVM типа List
+            List<UserVM> listOfUsersVM;
+        
             //Подключение к бд
             using (Db db = new Db())
             {
-                //Получаем данные из DTO
-                SidebarDTO dto = db.Sidebars.Find(1);
+                UserRoleDTO rdto = db.UserRoles.FirstOrDefault(x => x.UserId == userId);
 
-                //Заполняем модель данными
-                model = new SidebarVM(dto);
+                //Инициализирование list и заполнение данными
+               listOfUsersVM = db.Users.ToArray()
+                     .Where(x => userId == null || rdto.RoleId == 1 ||rdto.UserId == userId)
+                     .Select(x => new UserVM(x))
+                     .ToList();
             }
 
-            //Возвращаем представление с моделью
-            return View(model); 
-        }
-
-        // POST: Admin/Pages/EditSidebar
-        [HttpPost]
-        public ActionResult EditSidebar(SidebarVM model)
-        {
-            //Подключение к бд 
-            using (Db db = new Db())
-            {
-                //Получаем данные из DTO
-                SidebarDTO dto = db.Sidebars.Find(1);
-
-                //Присваиваем данные в свойство Body
-                dto.Body = model.Body;
-
-                //Сохраняем
-                db.SaveChanges();
-            }
-            //Присваиваем сообщение в TempData
-            TempData["M"] = "Вы отредактировали боковую панель";
-
-            //Переадресовываем пользователя
-            return RedirectToAction("EditSidebar");
+            //Возврат представления с данными
+            return View(listOfUsersVM);
         }
     }
-} 
+}

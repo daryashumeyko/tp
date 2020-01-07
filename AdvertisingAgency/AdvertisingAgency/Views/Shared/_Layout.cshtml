@@ -9,7 +9,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
         <a class="navbar-brand" href="/">Про медиа </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -22,19 +22,19 @@
                 <!--Если пользователь авторизован-->
                 @if (Request.IsAuthenticated)
                 {
-                <li> @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) @*<a href="/account/logout">Выйти</a>*@ </li>
+                <li> @Html.ActionLink("Выйти", "Logout", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) @*<a href="/account/logout">Выйти</a>*@ </li>
                 }
                 else
                 {
                     //Если неавторизованный пользователь находится на странице login, ссылка активна
                     if (ViewBag.Title == "Login")
                     {
-                        <li class="navbar-text"> @Html.ActionLink("Login", "Login", "Account", null, new { @class = "active", style = "text-decoration: none" }) </li>
+                        <li class="navbar-text"> @Html.ActionLink("Войти", "Login", "Account", null, new { @class = "active", style = "text-decoration: none" }) </li>
                     }
                     //Если неавторизованный пользователь находится на любой другой странице, ссылка не активна
                     else
                     {
-                        <li class="navbar-text"> @Html.ActionLink("Login", "Login", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
+                        <li class="navbar-text"> @Html.ActionLink("Войти", "Login", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
                     }
                 }
 
@@ -51,7 +51,7 @@
     </nav>
 
 
-    <div class="container body-content>"
+    <div class="container body-content">
          <div class="row">
 
              <div class="col-sm-12 col-md-3 list-group">
