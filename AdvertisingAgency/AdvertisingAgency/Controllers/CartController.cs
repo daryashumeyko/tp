@@ -4,6 +4,9 @@ using AdvertisingAgency.Models.ViewModels.Cart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -212,17 +215,116 @@ namespace AdvertisingAgency.Controllers
             //Объявление модели
             UserProfileVM model;
 
-            using (Db db = new Db())
+            if (userName != "")
             {
-                //Получение пользователя
-                UserDTO dto = db.Users.FirstOrDefault(x => x.Username == userName);
+                using (Db db = new Db())
+                {
+                    //Получение пользователя
+                    UserDTO dto = db.Users.FirstOrDefault(x => x.Username == userName);
 
-                //Инициализируем модель данными
-                model = new UserProfileVM(dto);
+                    //Инициализируем модель данными
+                    model = new UserProfileVM(dto);
+                }
             }
+            else
+            {
+                //Оставляем модель пустой
+                model = new UserProfileVM();
+
+                //Установка сообщения в Tempdata
+                TempData["M"] = "Для оформления заказа войдите в учетную запись!";
+            }
+
             //Возврат модели в представление
             return View("Order", model);
         }
 
+
+        public bool ProcessOrder(List<CartVM> cart, UserVM UserInfo)
+        {
+            using (var smtpClient = new SmtpClient())
+            {
+                smtpClient.EnableSsl = true;
+                smtpClient.Host = "smtp.mail.ru";
+                smtpClient.Port = 465;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("promedia2020@mail.ru", "pass2020");
+
+
+               // smtpClient.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+               // smtpClient.PickupDirectoryLocation = @"c:\PROmedia_emails";
+               // smtpClient.EnableSsl = false;
+
+                StringBuilder body = new StringBuilder()
+                    .AppendLine("Новый заказ")
+                    .AppendLine("---")
+                    .AppendLine("Реклама:");
+
+                var Total = 0;
+                foreach (var item in cart)
+                {
+                    body.AppendFormat("{0} {1}\t{2} * {3} (итого: {4:c}",
+                        item.ProductId, item.ProductName, item.Quantity, item.Price, item.Total);
+                    Total += item.Total;
+                }
+
+                body.AppendFormat("Общая стоимость: {0:c}", Total)
+                    .AppendLine("---")
+                    .AppendLine("Данные пользователя:")
+                    .AppendLine(UserInfo.FirstName)
+                    .AppendLine(UserInfo.LastName)
+                    .AppendLine(UserInfo.EmailAdress)
+                    .AppendLine(UserInfo.Username);
+
+                MailMessage mailMessage = new MailMessage(
+                                       "promedia2020@mail.ru",          // От кого 
+                                       "admpromedia2020@mail.ru",       // Кому  пароль 2020pass
+                                       "Новый заказ отправлен!",        // Тема
+                                       body.ToString());                // Тело письма
+
+
+                //mailMessage.BodyEncoding = Encoding.UTF8;
+                try
+                {
+                    smtpClient.Send(mailMessage);
+                    return true;
+                }
+                catch (SmtpException e)
+                {
+                    return false;
+                }
+            }
+
+        }
+
+        //GET: /cart/order
+        //Оформить заказ
+        [HttpPost]
+        public ActionResult Order(int id)
+        {
+            //Объявление модели ProductVM
+            UserVM model;
+
+            using (Db db = new Db())
+            {
+                //Получение рекламы
+                UserDTO dto = db.Users.Find(id);
+
+                //Инициализация модели данных
+                model = new UserVM(dto);
+            }
+
+            //Объявление list типа CartVM (если сессия пуста создаётся новый лист)
+            var cart = Session["cart"] as List<CartVM> ?? new List<CartVM>();
+
+            if (ProcessOrder(cart, model))
+            {
+                return RedirectToAction("OrderResult");
+            }
+            else
+            {
+                return RedirectToAction("OrderResult");
+            }
+        }
     }
 }
