@@ -66,13 +66,16 @@ else
         }
 
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
             <td class="grandtotal"><b>Итоговая стоимость:   </b><span>@ViewBag.GrandTotal р.</span></td>
+        </tr>
+
+    </table>
+    
+    <table>
+        <tr>
+            <th>
+                @Html.ActionLink("Перейти к оформлению заказа", "Order", null,  new { @class = "btn btn-primary" })
+            </th>
         </tr>
     </table>
 }

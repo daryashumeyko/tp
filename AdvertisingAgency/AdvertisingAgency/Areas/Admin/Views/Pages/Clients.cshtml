@@ -1,46 +1,44 @@
-﻿@model AdvertisingAgency.Models.ViewModels.Account.UserVM
+﻿@model IEnumerable <AdvertisingAgency.Models.ViewModels.Account.UserVM>
 
 @{
-ViewBag.Title = "Clients";
+    ViewBag.Title = "Clients";
 }
-
 
 <h2>Clients</h2>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Имя:
-        </dt>
+<table class="table">
+    <tr>
+        <th>
+            Имя
+        </th>
+        <th>
+            Фамилия
+        </th>
+        <th>
+            Почтовый адрес
+        </th>
+        <th>
+            Логин
+        </th>
+        <th></th>
+    </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-
-        <dt>
-            Фамилия:
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-
-        <dt>
-            Почтовый адрес:
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmailAdress)
-        </dd>
-
-        <dt>
-            Логин:
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Username)
-        </dd>
-
-    </dl>
-</div>
+    <!--Метод вывода клиентов-->
+    @foreach (var client in Model)
+    {
+    <tr>
+        <td>
+            @client.FirstName
+        </td>
+        <td>
+            @client.LastName
+        </td>
+        <td>
+            @client.EmailAdress
+        </td>
+        <td>
+            @client.Username
+        </td>
+    </tr>
+    }
+</table>

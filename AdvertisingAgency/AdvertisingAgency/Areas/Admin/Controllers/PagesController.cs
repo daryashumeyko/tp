@@ -266,18 +266,21 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
         public ActionResult Clients()
         {
             //Объявление модели UserVM типа List
-            List<UserVM> listOfUsersVM;
-        
+            List<UserVM> listOfUsersVM = new List<UserVM>();
+
             //Подключение к бд
             using (Db db = new Db())
             {
-                UserRoleDTO rdto = db.UserRoles.FirstOrDefault(x => x.RoleId == 2);
+                List<UserRoleDTO> rdto = db.UserRoles.Where(x => x.RoleId == 2).ToList();
+                List<UserDTO> udto = db.Users.ToList();
+
+                var query = from user in udto join role in rdto on user.Id equals role.UserId select user;
 
                 //Инициализирование list и заполнение данными
-               listOfUsersVM = db.Users.ToArray()
-                     .Where(x => rdto.UserId == x.Id)
-                     .Select(x => new UserVM(x))
-                     .ToList();
+                foreach (var user in query)
+                {
+                    listOfUsersVM.Add(new UserVM(user));
+                }
             }
 
             //Возврат представления с данными

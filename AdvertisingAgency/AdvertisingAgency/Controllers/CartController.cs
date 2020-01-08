@@ -1,4 +1,5 @@
 ﻿using AdvertisingAgency.Models.Date;
+using AdvertisingAgency.Models.ViewModels.Account;
 using AdvertisingAgency.Models.ViewModels.Cart;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,10 @@ namespace AdvertisingAgency.Controllers
     public class CartController : Controller
     {
         // GET: Cart
+        //Просмотр корзины
         public ActionResult Index()
         {
-            //Объявление list типа CartVM (если сессия пуст асоздаётся новый лист
+            //Объявление list типа CartVM (если сессия пуста создаётся новый лист)
             var cart = Session["cart"] as List<CartVM> ?? new List<CartVM>();
 
             //Проверка корзины = 0 или нет
@@ -74,6 +76,7 @@ namespace AdvertisingAgency.Controllers
             return PartialView("_CartPartial", model);
         }
 
+        //Добавление рекламы в корзину
         public ActionResult AddToCartPartial(int id)
         {
             //Объявление List типа CartVM   (если сессия пуста создаётся новый лист)
@@ -131,6 +134,7 @@ namespace AdvertisingAgency.Controllers
         }
 
         //GET: /cart/IncrementProduct
+        //Увеличить кол-во товаров
         public JsonResult IncrementProduct(int productId)
         {
             //Объявление list cart
@@ -153,6 +157,7 @@ namespace AdvertisingAgency.Controllers
         }
 
         //GET: /cart/DecrementProduct
+        //Уменьшить кол-во товаров
         public ActionResult DecrementProduct(int productId)
         {
             //Объявление list cart
@@ -181,6 +186,7 @@ namespace AdvertisingAgency.Controllers
         }
 
         //GET: /cart/RemoveProduct
+        //Удалить товар из корзины
         public void RemoveProduct(int productId)
         {
             //Объявление list cart
@@ -194,5 +200,29 @@ namespace AdvertisingAgency.Controllers
                 cart.Remove(model);
             }
         }
+
+        //GET: /cart/order
+        //Оформить заказ
+        [HttpGet]
+        public ActionResult Order()
+        {
+            //Получение имени пользователя
+            string userName = User.Identity.Name;
+
+            //Объявление модели
+            UserProfileVM model;
+
+            using (Db db = new Db())
+            {
+                //Получение пользователя
+                UserDTO dto = db.Users.FirstOrDefault(x => x.Username == userName);
+
+                //Инициализируем модель данными
+                model = new UserProfileVM(dto);
+            }
+            //Возврат модели в представление
+            return View("Order", model);
+        }
+
     }
 }
