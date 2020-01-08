@@ -37,16 +37,6 @@ namespace AdvertisingAgency.Controllers
             //Установка заголовка страницы
             ViewBag.PageTitle = dto.Title;
 
-            //Проверка боковой панели 
-            if (dto.HasSidebar == true)
-            {
-                ViewBag.Sidebar = "Yes";
-            }
-            else
-            {
-                ViewBag.Sidebar = "No";
-            }
-
             //Заполнение модели данными
             model = new PageVM(dto);
 

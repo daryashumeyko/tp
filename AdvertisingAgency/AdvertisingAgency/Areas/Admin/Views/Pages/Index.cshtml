@@ -51,9 +51,6 @@ else
                     @Html.DisplayFor(modelItem => item.Slug)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.HasSidebar)
-                </td>
-                <td>
                     @Html.ActionLink("Редактировать страницу", "EditPage", new { id = item.Id }) |
                     @Html.ActionLink("Просмотреть страницу", "PageDetails", new { id = item.Id })
 

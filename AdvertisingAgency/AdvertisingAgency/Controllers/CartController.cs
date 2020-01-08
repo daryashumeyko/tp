@@ -246,7 +246,7 @@ namespace AdvertisingAgency.Controllers
             {
                 smtpClient.EnableSsl = true;
                 smtpClient.Host = "smtp.mail.ru";
-                smtpClient.Port = 465;
+                smtpClient.Port = 25;
                 smtpClient.UseDefaultCredentials = false;
                 smtpClient.Credentials = new NetworkCredential("promedia2020@mail.ru", "pass2020");
 
@@ -319,11 +319,14 @@ namespace AdvertisingAgency.Controllers
 
             if (ProcessOrder(cart, model))
             {
-                return RedirectToAction("OrderResult");
+                Session["cart"] = null;
+                TempData["I"] = "Заказ отправлен!";
+                return RedirectToAction("Order");
             }
             else
             {
-                return RedirectToAction("OrderResult");
+                TempData["M"] = "Заказ не отправлен!";
+                return RedirectToAction("Order");
             }
         }
     }

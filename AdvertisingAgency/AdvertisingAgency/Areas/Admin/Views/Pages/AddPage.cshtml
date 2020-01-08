@@ -39,16 +39,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.HasSidebar, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.HasSidebar)
-                    @Html.ValidationMessageFor(model => model.HasSidebar, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
             <div class="offset-2 col">
                 <input type="submit" value="Добавить страницу" class="btn btn-default" />
             </div>
