@@ -4,7 +4,6 @@ using AdvertisingAgency.Models.ViewModels.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace AdvertisingAgency.Areas.Admin.Controllers
@@ -257,8 +256,6 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
                 }
             }
         }
-
-
 
         //Создание метода списка клиентов
         // GET: Admin/Pages/Clients

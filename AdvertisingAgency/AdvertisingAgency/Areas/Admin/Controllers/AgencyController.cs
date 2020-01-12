@@ -1,7 +1,6 @@
 ﻿using AdvertisingAgency.Models.Date;
 using AdvertisingAgency.Models.ViewModels.Agency;
 using PagedList;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -510,54 +509,6 @@ namespace AdvertisingAgency.Areas.Admin.Controllers
 
             //Переадресация пользователя
             return RedirectToAction("Products");
-        }
-
-        //Создание метода добавления изображений в галерею
-        // POST: Admin/Agency/SaveGalleryImages/id
-        [HttpPost]
-        public void SaveGalleryImages(int id)
-        {
-            //Перебор всех полученных файлов изображения
-            foreach (string fileName in Request.Files)
-            {
-                //Инициализация файлов
-                HttpPostedFileBase file = Request.Files[fileName];
-
-                //Проверка на null
-                if (file != null && file.ContentLength > 0)
-                {
-                    //Назначение путей к директориям
-                    var originalDirectory = new DirectoryInfo(string.Format($"{Server.MapPath(@"\")}Images\\Uploads"));
-
-                    string pathString1 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Gallery");
-                    string pathString2 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Gallery\\Small");
-
-                    //Назаначение путей изображений
-                    var path = string.Format($"{pathString1}\\{file.FileName}");
-                    var path2 = string.Format($"{pathString2}\\{file.FileName}");
-
-                    //Сохранение оригинальных изображений и уменьшенных копий
-                    file.SaveAs(path);
-
-                    WebImage img = new WebImage(file.InputStream);
-                    img.Resize(200, 200).Crop(1,1);
-                    img.Save(path2);
-                }
-            }
-        }
-
-        //Создание метода удаления изображений из галереи
-        // POST: Admin/Agency/DeleteImage/id/imageName
-        public void DeleteImage(int id, string imageName)
-        {
-            string fullPath1 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/" + imageName);
-            string fullPath2 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/Small/" + imageName);
-
-            if (System.IO.File.Exists(fullPath1))
-                System.IO.File.Delete(fullPath1);
-
-            if (System.IO.File.Exists(fullPath2))
-                System.IO.File.Delete(fullPath2);
         }
     }
 }

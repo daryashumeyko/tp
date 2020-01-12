@@ -10,9 +10,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <!--Ссылка на главную страницу-->
-        @Html.ActionLink("Про медиа", "Index", "Cart", "", new { @class = "navbar-brand" })
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top"> 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,12 +27,12 @@
                     //Если неавторизованный пользователь находится на странице login, ссылка активна
                     if (ViewBag.Title == "Login")
                     {
-                        <li class="navbar-text"> @Html.ActionLink("Войти", "Login", "Account", null, new { @class = "active", style = "text-decoration: none" }) </li>
+                        <li class="nav-item">  @Html.ActionLink("Войти", "Login", "Account", null, new { @class = "active", style = "text-decoration: none" }) </li>
                     }
                     //Если неавторизованный пользователь находится на любой другой странице, ссылка не активна
                     else
                     {
-                        <li class="navbar-text"> @Html.ActionLink("Войти", "Login", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
+                        <li class="nav-item"> @Html.ActionLink("Войти", "Login", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
                     }
                 }
 

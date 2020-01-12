@@ -42,6 +42,7 @@ namespace AdvertisingAgency.Controllers
             return View(cart);
         }
 
+        //частичное представление в верхнем правом углу с данными о рекламе в корзине
         public ActionResult CartPartial()
         {
             //Объявление модели CartVM
@@ -239,7 +240,7 @@ namespace AdvertisingAgency.Controllers
             return View("Order", model);
         }
 
-
+        //Отправка заказа на почту
         public bool ProcessOrder(List<CartVM> cart, UserVM UserInfo)
         {
             using (var smtpClient = new SmtpClient())

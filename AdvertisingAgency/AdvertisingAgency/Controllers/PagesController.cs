@@ -52,28 +52,12 @@ namespace AdvertisingAgency.Controllers
             //Получение все страниц кроме home
             using (Db db = new Db())
             {
-                pageVMList = db.Pages.ToArray().OrderBy(x => x.Sorting).Where(x => x.Slug != "home").Select(x => new PageVM(x)).ToList();
+                pageVMList = db.Pages.ToArray().OrderBy(x => x.Sorting).Select(x => new PageVM(x)).ToList();
             }
 
             //Возврат частичного представления с листом данных
             return PartialView("_PagesMenuPartial", pageVMList);
         }
 
-        public ActionResult SidebarPartial()
-        {
-            //Объявление модели
-            SidebarVM model;
-
-            //Инициализация модели данных
-            using (Db db = new Db())
-            {
-                SidebarDTO dto = db.Sidebars.Find(1);
-
-                model = new SidebarVM(dto);
-            }
-
-            //Возврат модели в частичное представление
-            return PartialView("_SidebarPartial", model);
-        }
     }
 }
